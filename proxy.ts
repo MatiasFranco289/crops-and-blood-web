@@ -3,10 +3,8 @@ import type { NextRequest } from "next/server";
 
 export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
-  const validRoutes = ["/", "/roadmap", "/blogs"];
 
   if (
-    !validRoutes.includes(pathname) ||
     pathname.startsWith("/api") ||
     pathname.startsWith("/_next") ||
     pathname === "/favicon.ico" ||

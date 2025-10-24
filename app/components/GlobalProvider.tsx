@@ -9,7 +9,7 @@ import {
   useState,
 } from "react";
 import { ProjectDetails } from "../interfaces";
-import { notFound, useParams, usePathname } from "next/navigation";
+import { useParams } from "next/navigation";
 
 type GlobalContextType = {
   projectDetails: ProjectDetails | undefined;
@@ -23,9 +23,7 @@ type GlobalProviderProps = {
 };
 
 export const GlobalProvider = ({ children }: GlobalProviderProps) => {
-  const validLanguages = ["en", "es"];
   const lang = useParams().lang as "en" | "es";
-  const pathname = usePathname();
   const [appReady, setAppReady] = useState<boolean>(false);
   const [projectDetails, setProjectDetails] = useState<ProjectDetails>();
 
@@ -87,14 +85,6 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
 
     start();
   }, []);
-
-  useEffect(() => {
-    if (validLanguages.includes(lang)) {
-      return;
-    }
-
-    notFound();
-  }, [pathname]);
 
   return (
     <GlobalContext.Provider value={{ appReady, projectDetails }}>

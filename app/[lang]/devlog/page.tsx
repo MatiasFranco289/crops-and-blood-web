@@ -20,7 +20,7 @@ export default function Devlog() {
   const [blogs, setBlogs] = useState<Array<Blog>>([]);
   const offset = useRef<number>(0);
   const totalBlogs = useRef<number>(0);
-  const limit = 5;
+  const limit = 1;
   const lang = useParams().lang as "en" | "es";
   const texts = {
     noBlogs: {
@@ -43,6 +43,7 @@ export default function Devlog() {
   }, [appReady]);
 
   async function getBlogs() {
+    setLoadingBlogs(true);
     const token = localStorage.getItem(API_KEY);
 
     axiosInstance
@@ -70,6 +71,7 @@ export default function Devlog() {
       })
       .finally(() => {
         setLoading(false);
+        setLoadingBlogs(false);
       });
   }
 
@@ -144,6 +146,7 @@ export default function Devlog() {
               alt="amogus.gif"
               height={200}
               width={200}
+              unoptimized
             />
             <h4 className="text-2xl font-semibold text-center">
               {texts.error[lang]}
@@ -161,6 +164,7 @@ export default function Devlog() {
             alt="amogus.gif"
             height={200}
             width={200}
+            unoptimized
           />
           <h4 className="text-2xl font-semibold text-center">
             {texts.noBlogs[lang]}
