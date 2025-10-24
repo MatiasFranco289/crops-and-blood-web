@@ -3,9 +3,10 @@ import type { NextRequest } from "next/server";
 
 export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
+  const validRoutes = ["/", "/roadmap", "/blogs"];
 
-  // Ignorar API, Next.js, favicon, imágenes y rutas que ya tengan idioma
   if (
+    !validRoutes.includes(pathname) ||
     pathname.startsWith("/api") ||
     pathname.startsWith("/_next") ||
     pathname === "/favicon.ico" ||
@@ -25,5 +26,5 @@ export function proxy(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/:path*"], // matcher simple que incluye todo
+  matcher: ["/:path*"],
 };

@@ -4,12 +4,44 @@ import { FaInstagram } from "react-icons/fa6";
 import { FaSteam } from "react-icons/fa";
 import { FaDiscord } from "react-icons/fa";
 import { FaYoutube } from "react-icons/fa";
+import { useParams } from "next/navigation";
+import { useGlobal } from "../components/GlobalProvider";
+import ReactMarkdown from "react-markdown";
+import { useEffect, useRef, useState } from "react";
+import { getRandomScream } from "../utils";
 
 export default function Home() {
+  const { projectDetails } = useGlobal();
+  const moreSectionRef = useRef<HTMLDivElement | null>(null);
+  const lang = useParams().lang as "en" | "es";
+  const [loadingTexts, setLoadingTexts] = useState<Array<string>>([]);
+
+  useEffect(() => {
+    const wordCount = 82;
+    let result = [];
+
+    for (let i = 0; i < wordCount; i++) {
+      result.push(getRandomScream());
+    }
+
+    setLoadingTexts(result);
+  }, []);
+
+  const texts = {
+    backToTop: {
+      es: "Volver arriba",
+      en: "Back to top",
+    },
+    seeMore: {
+      es: "Ver más",
+      en: "See more",
+    },
+  };
+
   const scrollToBottom = () => {
-    window.scrollTo({
-      top: document.body.scrollHeight,
+    moreSectionRef.current?.scrollIntoView({
       behavior: "smooth",
+      block: "start",
     });
   };
 
@@ -70,7 +102,7 @@ export default function Home() {
                 scrollToBottom();
               }}
             >
-              See more
+              {texts.seeMore[lang]}
             </button>
           </div>
         </div>
@@ -78,50 +110,40 @@ export default function Home() {
 
       <div className="w-full min-h-screen" />
 
-      <div className="w-full bg-[#12050d] flex flex-col items-center justify-center min-h-screen items-center z-30 relative">
+      <div
+        className="w-full bg-[#12050d] flex flex-col items-center justify-between min-h-screen items-center z-30"
+        ref={moreSectionRef}
+      >
         <button
-          className="absolute left-1/2 -translate-x-1/2 top-12 text-lg underline cursor-pointer p-2 hover:scale-105 duration-200"
+          className="text-lg underline cursor-pointer hover:scale-105 duration-200 p-4 my-12 sm:my-8"
           onClick={() => {
             scrollToTop();
           }}
         >
-          Volver arriba
+          {texts.backToTop[lang]}
         </button>
 
         <div className="w-3/6 space-y-4">
-          <p>
-            Hola chicos, aca SunlessDev. Sip, parece que voy a estar renunciando
-            a mi trabajo hacia finales de este año (2025) y viviendo en la
-            absoluta indigencia para seguir mi sueño de desarrollar videojuegos.
-          </p>
-
-          <p>
-            Crops and blood (Nombre provisional) será un juego en 2D, pixel art,
-            que mezcla elementos de dos de mis géneros favoritos: Roguelikes y
-            juegos de granja.
-          </p>
-
-          <p>
-            Eres un recolector en el planeta Ereno. Te ganas la vida
-            adentrándote en las zonas abandonadas, el único lugar del planeta
-            donde se puede cultivar y obtener esencia. Planta semillas, riégalas
-            con la sangre de tus enemigos, cultívalas para conseguir mejoras,
-            arma tu build, rompe el juego y conviértete en un dios de la
-            destrucción. Abrete paso sembrando el caos entre las hordas de
-            enemigos para escapar con tu recompensa… y vuelve por más.
-          </p>
-
-          <p>
-            Actualmente, el juego se encuentra en fase preliminar y estimo que
-            el desarrollo real comenzará en febrero de 2026. Estaré publicando
-            actualizaciones constantes en mis redes y en el blog de esta página,
-            así que seguime y unite a esta aventura.
-          </p>
-
-          <p>Nos vemos en Ereno :).</p>
+          {projectDetails ? (
+            <ReactMarkdown>{projectDetails?.long_description}</ReactMarkdown>
+          ) : (
+            <div className="flex flex-row flex-wrap space-x-2 space-y-2">
+              {loadingTexts.map((text, index) => {
+                return (
+                  <p
+                    key={`loading_scream_${index}`}
+                    style={{ animationDelay: `${index * 30}ms` }}
+                    className="bg-white/5 text-transparent animate-pulse rounded"
+                  >
+                    {text}
+                  </p>
+                );
+              })}
+            </div>
+          )}
         </div>
 
-        <div className="w-3/4 h-[1px] bg-white mt-24" />
+        <div className="w-3/4 h-[1px] bg-white my-24" />
       </div>
     </div>
   );

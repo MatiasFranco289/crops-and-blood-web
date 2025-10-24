@@ -1,0 +1,33 @@
+[
+  {
+    "title": "Fase 1 - Diseño preliminar",
+    "startDate": "2025-10-24",
+    "endDate": "2026-02-01",
+    "objetives": [
+      {
+        "name": "Creacion de la pagina web del juego",
+        "fulfilled": true
+      },
+      {
+        "name": "Escritura y revision del GDD",
+        "fulfilled": false
+      },
+      {
+        "name": "Creacion y estimacion de tareas",
+        "fulfilled": false
+      },
+      {
+        "name": "Creacion del roadmap",
+        "fulfilled": false
+      },
+      {
+        "name": "Busqueda del estilo artistico para el juego",
+        "fulfilled": false
+      },
+      {
+        "name": "Renunciar al trabajo",
+        "fulfilled": false
+      }
+    ]
+  }
+]
