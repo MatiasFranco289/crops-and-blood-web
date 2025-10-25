@@ -69,7 +69,7 @@ export default function Home() {
           <div key={`loading_social_${index}`}>
             {
               <s.icon
-                className="text-6xl text-white/30 animate-pulse"
+                className="text-4xl xl:text-6xl text-white/30 animate-pulse"
                 style={{ animationDelay: `${index * 300}ms` }}
               />
             }
@@ -92,7 +92,7 @@ export default function Home() {
             target="_blank"
           >
             {
-              <social.icon className="text-6xl hover:scale-105 duration-200 text-white cursor-pointer" />
+              <social.icon className="text-4xl xl:text-6xl hover:scale-105 duration-200 text-white cursor-pointer" />
             }
           </a>
         );
@@ -100,7 +100,7 @@ export default function Home() {
 
       return (
         <button key={`social_${index}`} title={texts.notAvailable[lang]}>
-          {<social.icon className="text-6xl text-white/60" />}
+          {<social.icon className="text-4xl xl:text-6xl text-white/60" />}
         </button>
       );
     });
@@ -109,25 +109,23 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center w-full bg-[#12050d] font-roboto">
       <div className="w-full flex flex-col items-center min-h-screen fixed">
-        <div className="w-4/6">
-          <Image
-            src="/portrait_pc.png"
-            alt="portrait.png"
-            width={0}
-            height={0}
-            unoptimized={true}
-            style={{
-              width: "100%",
-              height: "auto",
-              imageRendering: "pixelated",
-            }}
-          />
+        <div className="min-w-[300px] sm:min-w-[800px] xl:min-w-[1280px] w-4/6 bg-white/5">
+          <picture>
+            <source media="(max-width: 640px)" srcSet="/portrait_mobile.png" />
+            <source media="(min-width: 640px)" srcSet="/portrait_pc.png" />
+            <img
+              src="/portrait_pc.png"
+              alt="portrait"
+              className="w-full h-auto aspect-[360/560] sm:aspect-[640/280]"
+              style={{ imageRendering: "pixelated" }}
+            />
+          </picture>
         </div>
 
         <div className="space-y-4 flex flex-col items-center">
           <div>
             {projectDetails ? (
-              <h2 className="font-semibold text-xl mt-2">
+              <h2 className="font-semibold mt-2 text-[clamp(1.1rem,1.3vw,3rem)]">
                 {projectDetails.short_description}
               </h2>
             ) : (
