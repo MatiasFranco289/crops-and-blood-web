@@ -7,25 +7,12 @@ import { FaYoutube } from "react-icons/fa";
 import { useParams } from "next/navigation";
 import { useGlobal } from "../components/GlobalProvider";
 import ReactMarkdown from "react-markdown";
-import { useEffect, useRef, useState } from "react";
-import { getRandomScream } from "../utils";
+import { useRef } from "react";
 
 export default function Home() {
   const { projectDetails } = useGlobal();
   const moreSectionRef = useRef<HTMLDivElement | null>(null);
   const lang = useParams().lang as "en" | "es";
-  const [loadingTexts, setLoadingTexts] = useState<Array<string>>([]);
-
-  useEffect(() => {
-    const wordCount = 82;
-    let result = [];
-
-    for (let i = 0; i < wordCount; i++) {
-      result.push(getRandomScream());
-    }
-
-    setLoadingTexts(result);
-  }, []);
 
   const texts = {
     backToTop: {
@@ -35,6 +22,10 @@ export default function Home() {
     seeMore: {
       es: "Ver más",
       en: "See more",
+    },
+    notAvailable: {
+      es: "Todavia no disponible",
+      en: "Not available yet",
     },
   };
 
@@ -49,6 +40,69 @@ export default function Home() {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
+    });
+  };
+
+  const socials = {
+    Steam: {
+      icon: FaSteam,
+      url: "",
+    },
+    Discord: {
+      icon: FaDiscord,
+      url: "",
+    },
+    Youtube: {
+      icon: FaYoutube,
+      url: "",
+    },
+    Instagram: {
+      icon: FaInstagram,
+      url: "",
+    },
+  };
+
+  const renderizeSocials = () => {
+    if (!projectDetails) {
+      return Object.values(socials).map((s, index) => {
+        return (
+          <div key={`loading_social_${index}`}>
+            {
+              <s.icon
+                className="text-6xl text-white/30 animate-pulse"
+                style={{ animationDelay: `${index * 300}ms` }}
+              />
+            }
+          </div>
+        );
+      });
+    }
+
+    return Object.keys(socials).map((k, index) => {
+      const externalResource = projectDetails.external_resources.find(
+        (er) => er.name === k
+      );
+      const social = socials[k as keyof typeof socials];
+
+      if (externalResource) {
+        return (
+          <a
+            href={externalResource.url}
+            key={`social_${index}`}
+            target="_blank"
+          >
+            {
+              <social.icon className="text-6xl hover:scale-105 duration-200 text-white cursor-pointer" />
+            }
+          </a>
+        );
+      }
+
+      return (
+        <button key={`social_${index}`} title={texts.notAvailable[lang]}>
+          {<social.icon className="text-6xl text-white/60" />}
+        </button>
+      );
     });
   };
 
@@ -72,32 +126,36 @@ export default function Home() {
 
         <div className="space-y-4 flex flex-col items-center">
           <div>
-            <h2 className="font-semibold text-xl mt-2">
-              Destroy it, destroy it all
-            </h2>
+            {projectDetails ? (
+              <h2 className="font-semibold text-xl mt-2">
+                {projectDetails.short_description}
+              </h2>
+            ) : (
+              <div className="flex space-x-2 text-transparent text-xl font-semibold mt-2">
+                {["Destroy,", "it", "destroy", "it", "all"].map((t, index) => {
+                  return (
+                    <p
+                      key={`short_text_loading_${index}`}
+                      className="bg-white/5 rounded animate-pulse"
+                      style={{ animationDelay: `${index * 200}ms` }}
+                    >
+                      {t}
+                    </p>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
-          <div className="flex flex-row space-x-6 mt-6">
-            <a href="" target="_blank" className="hover:scale-105 duration-200">
-              <FaSteam className="text-6xl " />
-            </a>
-
-            <a href="" target="_blank" className="hover:scale-105 duration-200">
-              <FaDiscord className="text-6xl" />
-            </a>
-
-            <a href="" target="_blank" className="hover:scale-105 duration-200">
-              <FaYoutube className="text-6xl" />
-            </a>
-
-            <a href="" target="_blank" className="hover:scale-105 duration-200">
-              <FaInstagram className="text-6xl" />
-            </a>
-          </div>
+          <div className="flex flex-row space-x-6">{renderizeSocials()}</div>
 
           <div>
             <button
-              className="underline p-2 cursor-pointer hover:scale-105 duration-200"
+              className={`${
+                projectDetails
+                  ? "text-white cursor-pointer hover:scale-105"
+                  : "text-white/50 animate-pulse"
+              } underline p-2 duration-200`}
               onClick={() => {
                 scrollToBottom();
               }}
@@ -110,41 +168,27 @@ export default function Home() {
 
       <div className="w-full min-h-screen" />
 
-      <div
-        className="w-full bg-[#12050d] flex flex-col items-center justify-between min-h-screen items-center z-30"
-        ref={moreSectionRef}
-      >
-        <button
-          className="text-lg underline cursor-pointer hover:scale-105 duration-200 p-4 my-12 sm:my-8"
-          onClick={() => {
-            scrollToTop();
-          }}
+      {projectDetails && (
+        <div
+          className="w-full bg-[#12050d] flex flex-col items-center justify-between min-h-screen items-center z-30"
+          ref={moreSectionRef}
         >
-          {texts.backToTop[lang]}
-        </button>
+          <button
+            className="text-lg underline cursor-pointer hover:scale-105 duration-200 p-4 my-12 sm:my-8"
+            onClick={() => {
+              scrollToTop();
+            }}
+          >
+            {texts.backToTop[lang]}
+          </button>
 
-        <div className="w-3/6 space-y-4">
-          {projectDetails ? (
-            <ReactMarkdown>{projectDetails?.long_description}</ReactMarkdown>
-          ) : (
-            <div className="flex flex-row flex-wrap space-x-2 space-y-2">
-              {loadingTexts.map((text, index) => {
-                return (
-                  <p
-                    key={`loading_scream_${index}`}
-                    style={{ animationDelay: `${index * 30}ms` }}
-                    className="bg-white/5 text-transparent animate-pulse rounded"
-                  >
-                    {text}
-                  </p>
-                );
-              })}
-            </div>
-          )}
+          <div className="w-3/6 space-y-4">
+            <ReactMarkdown>{projectDetails.long_description}</ReactMarkdown>
+          </div>
+
+          <div className="w-3/4 h-[1px] bg-white my-24" />
         </div>
-
-        <div className="w-3/4 h-[1px] bg-white my-24" />
-      </div>
+      )}
     </div>
   );
 }
