@@ -145,7 +145,9 @@ export default function Home() {
             )}
           </div>
 
-          <div className="flex flex-row space-x-6">{renderizeSocials()}</div>
+          <div className="flex flex-row space-x-4 xl:space-x-6">
+            {renderizeSocials()}
+          </div>
 
           <div>
             <button
