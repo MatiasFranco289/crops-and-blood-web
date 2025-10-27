@@ -2,14 +2,13 @@
 
 import axiosInstance from "@/app/axios";
 import { useGlobal } from "@/app/components/GlobalProvider";
-import MarkdownSection from "@/app/components/MarkdownSection";
-import Separator from "@/app/components/Separator";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { API_KEY, BLOGS_URL, PROJECT_ID, PROJECTS_URL } from "@/app/constants";
 import { Blog } from "@/app/interfaces";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import BlogCard from "@/app/components/BlogCard";
 
 export default function Devlog() {
   const params = useParams();
@@ -20,7 +19,7 @@ export default function Devlog() {
   const [blogs, setBlogs] = useState<Array<Blog>>([]);
   const offset = useRef<number>(0);
   const totalBlogs = useRef<number>(0);
-  const limit = 1;
+  const limit = 5;
   const lang = useParams().lang as "en" | "es";
   const texts = {
     noBlogs: {
@@ -96,25 +95,15 @@ export default function Devlog() {
     if (blogs.length > 0) {
       return (
         <>
-          <div className="w-11/12 sm:w-4/6 mb-12">
+          <div className="w-11/12 sm:w-4/6 mb-12 space-y-24 my-16">
             {blogs.map((blog, index) => {
               return (
-                <div
-                  key={`blog_${index}`}
-                  className={`${
-                    index !== blogs.length - 1 ? "mb-24" : ""
-                  } mt-24`}
-                >
-                  <Separator gap="h-12" position="end" width="w-2/6" />
-                  <div className="p-4 rounded-xl hover:bg-white/10 duration-200">
-                    <div className="mb-3">
-                      <h3 className="text-xl font-semibold">{blog.title}</h3>
-                      <p className="text-sm">{blog.created_at.split("T")[0]}</p>
-                    </div>
-
-                    <MarkdownSection content={blog.body} />
-                  </div>
-                </div>
+                <BlogCard
+                  title={blog.title}
+                  createdAt={blog.created_at}
+                  content={blog.body}
+                  key={`blog_card_${index}`}
+                />
               );
             })}
           </div>
@@ -123,7 +112,7 @@ export default function Devlog() {
             <div className="flex justify-center my-6">
               <button
                 onClick={loadMoreBlogs}
-                className={`p-3 text-lg ${
+                className={`p-3 text-lg underline ${
                   loadingBlogs
                     ? "animate-pulse cursor-default"
                     : "cursor-pointer"
@@ -175,7 +164,7 @@ export default function Devlog() {
   }
 
   return (
-    <div className="font-roboto bg-[#12050d] w-full min-h-screen flex flex-col items-center">
+    <div className="font-roboto bg-[#12050d] w-full min-h-screen flex flex-col items-center overflow-hidden">
       {renderizeBlogs()}
     </div>
   );

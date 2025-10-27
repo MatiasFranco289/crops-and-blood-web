@@ -1,0 +1,15 @@
+.up_item {
+  animation: enter-from-above 0.4s ease-in forwards;
+  transform: translateY(-100%);
+}
+
+@keyframes enter-from-above {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
