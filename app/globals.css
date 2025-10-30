@@ -25,3 +25,9 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.simplebar-scrollbar::before {
+  background: #8b1431 !important;
+  border-radius: 10px !important;
+  opacity: 0.8 !important;
+}
