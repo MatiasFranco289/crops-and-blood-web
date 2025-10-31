@@ -90,3 +90,18 @@ export interface Blog {
   created_at: string;
   updated_at: string;
 }
+
+export interface RoadMap {
+  version: string;
+  lastUpdate: string;
+  phases: Array<{
+    phase: string;
+    title: string;
+    date: string;
+    completed: boolean;
+    objectives: Array<{
+      name: string;
+      fulfilled: boolean;
+    }>;
+  }>;
+}

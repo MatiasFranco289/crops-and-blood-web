@@ -1,9 +1,5 @@
 import { forwardRef, RefObject } from "react";
 import { MdCheckBoxOutlineBlank, MdOutlineCheckBox } from "react-icons/md";
-import { TbPointFilled } from "react-icons/tb";
-import Separator from "./Separator";
-import { getMonthName } from "../utils";
-import { useParams } from "next/navigation";
 
 interface ObjetiveFlagProps {
   date: string;
@@ -11,40 +7,19 @@ interface ObjetiveFlagProps {
   title: string;
   objetives: Array<{ name: string; fulfilled: boolean }>;
   ref: RefObject<HTMLDivElement | null>;
-  drawTimeline?: boolean;
-  completed: boolean;
+  loading: boolean;
 }
 
 const ObjetiveFlag = forwardRef<HTMLDivElement, ObjetiveFlagProps>(
-  ({ date, phase, title, objetives, drawTimeline = false, completed }, ref) => {
-    const lang = useParams().lang as "en" | "es";
-    const monthName = getMonthName(date, lang);
-    const year = date.split("T")[0].split("-")[0];
-
+  ({ date, phase, title, objetives, loading }, ref) => {
     return (
-      <div className="flex flex-col items-center font-roboto mb-42" ref={ref}>
-        <div className="flex flex-col-reverse sm:flex-col items-center mb-2 space-y-2 ml-4 sm:ml-0 w-full">
-          <h3 className="text-xl font-semibold text-center">{`${monthName}. ${year}`}</h3>
-          <div className="sm:hidden flex w-full justify-center">
-            <Separator gap="h-4" width="w-4/6" />
-          </div>
-          <div className="z-50">
-            <TbPointFilled
-              className={`text-4xl block ${
-                completed ? "text-[#8b1431]" : "text-white"
-              }`}
-            />
-          </div>
-        </div>
-
-        <div className="w-full sm:max-w[1000px] max-w-[420px] sm:w-[400px] lg:w-[500px] h-full relative flex justify-center">
-          {drawTimeline && (
-            <div
-              className={`h-[3px] ${
-                completed ? "bg-[#8b1431]" : "bg-white"
-              } min-w-[calc(100%+42px)] absolute top-[-28] left-[50%] hidden sm:block z-10`}
-            />
-          )}
+      <div
+        className={`flex flex-col items-center font-roboto mb-52 sm:mb-42 h-full min-h-[380px] hover:scale-105 duration-200 ${
+          loading ? "animate-pulse" : ""
+        }`}
+        ref={ref}
+      >
+        <div className="w-full sm:max-w[1000px] max-w-[420px] sm:w-[400px] lg:w-[500px] h-full min-h-[380px] relative flex justify-center">
           <img
             src={"/stick2.png"}
             className="w-full absolute top-0 z-30"
