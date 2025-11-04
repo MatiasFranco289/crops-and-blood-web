@@ -1,9 +1,11 @@
 "use client";
-import Image from "next/image";
-import { FaInstagram } from "react-icons/fa6";
-import { FaSteam } from "react-icons/fa";
-import { FaDiscord } from "react-icons/fa";
-import { FaYoutube } from "react-icons/fa";
+import {
+  FaYoutube,
+  FaTwitter,
+  FaDiscord,
+  FaSteam,
+  FaInstagram,
+} from "react-icons/fa";
 import { useParams } from "next/navigation";
 import { useGlobal } from "../components/GlobalProvider";
 import ReactMarkdown from "react-markdown";
@@ -58,6 +60,10 @@ export default function Home() {
     },
     Instagram: {
       icon: FaInstagram,
+      url: "",
+    },
+    Twitter: {
+      icon: FaTwitter,
       url: "",
     },
   };

@@ -98,7 +98,11 @@ export default function RoadMap() {
           <div className="flex flex-col-reverse sm:flex-col items-center sm:mb-6 mb-0 space-y-2 ml-4 sm:ml-0 w-full relative">
             {!loading ? (
               <h3 className="text-xl font-semibold text-center">{`${
-                monthName ? monthName + ". " + year : texts.soon[lang]
+                monthName
+                  ? monthName + ". " + year
+                  : flag.date
+                  ? flag.date
+                  : texts.soon[lang]
               }`}</h3>
             ) : (
               <h3 className="text-xl font-semibold text-transparent bg-white/10 animate-pulse">{`Oct. 2025`}</h3>
