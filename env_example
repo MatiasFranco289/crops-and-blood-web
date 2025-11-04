@@ -1,0 +1,3 @@
+NEXT_PUBLIC_API_URL="https://my-api-url"
+NEXT_PUBLIC_API_USERNAME = "guest"
+NEXT_PUBLIC_API_PASSWORD = "guest"
