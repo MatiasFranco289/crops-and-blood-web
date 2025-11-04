@@ -118,6 +118,7 @@ export default function Home() {
               alt="portrait"
               className="w-full h-auto aspect-[360/560] sm:aspect-[640/280]"
               style={{ imageRendering: "pixelated" }}
+              draggable={false}
             />
           </picture>
         </div>

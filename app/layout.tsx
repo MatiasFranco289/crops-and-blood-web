@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   title: "Crops and blood",
   description: "Destroy it, destroy it all",
   icons: {
-    icon: "/favicon.png",
+    icon: "/icon.png",
   },
 };
 

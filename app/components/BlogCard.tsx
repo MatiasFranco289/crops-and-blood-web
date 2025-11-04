@@ -20,6 +20,7 @@ export default function BlogCard({ title, createdAt, content }: BlogCardProps) {
           alt="portrait"
           style={{ imageRendering: "pixelated" }}
           className="w-full"
+          draggable={false}
         />
       </picture>
 

@@ -24,6 +24,7 @@ const ObjetiveFlag = forwardRef<HTMLDivElement, ObjetiveFlagProps>(
             src={"/stick2.png"}
             className="w-full absolute top-0 z-30"
             style={{ imageRendering: "pixelated" }}
+            draggable={false}
           />
 
           {/* Card */}
@@ -54,6 +55,7 @@ const ObjetiveFlag = forwardRef<HTMLDivElement, ObjetiveFlagProps>(
               src={"/flag.png"}
               className=" w-full top-full absolute"
               style={{ imageRendering: "pixelated" }}
+              draggable={false}
             />
           </div>
         </div>
